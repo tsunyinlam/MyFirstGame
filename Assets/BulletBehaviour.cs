@@ -5,7 +5,8 @@ using UnityEngine;
 public class BulletBehaviour : MonoBehaviour
 {
 
-    public float speed;
+    public float bulletSpeed;
+    public float inaccuracy;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +16,6 @@ public class BulletBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.forward * vertMoveMultiplier;
+        transform.position += transform.forward * bulletSpeed * Time.deltaTime;
     }
 }

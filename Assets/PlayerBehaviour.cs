@@ -11,6 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
     public float expQuotient;
     public float speed; //Meter per second / Unit per second? Apparantely
     public GameObject bulletPrefab;
+    public float bulletSpawnDistance;
 
     float MoveMultiplier(float maxDistanceTravelled, float expQuotient, float axis)
     {
@@ -33,21 +34,26 @@ public class PlayerBehaviour : MonoBehaviour
         Debug.Log(Input.GetAxis("Vertical"));
 
         float maxDistanceTravelled = speed * Time.deltaTime;
-       
+
         float vertAxis = Input.GetAxis("Vertical");
         float vertMoveMultiplier = MoveMultiplier(maxDistanceTravelled, expQuotient, vertAxis);
-        transform.position += Vector3.forward * vertMoveMultiplier;
-
 
         float horzAxis = Input.GetAxis("Horizontal");
         float horzMoveMultiplier = MoveMultiplier(maxDistanceTravelled, expQuotient, horzAxis);
-        transform.position += Vector3.right* horzMoveMultiplier;
+
+        Vector3 movementVector = new Vector3(horzMoveMultiplier, 0, vertMoveMultiplier);
+        Vector3 newPosition = transform.position + movementVector;
+
+        transform.LookAt(newPosition);
+
+        //Move
+        transform.position = newPosition;
 
         //Click to fire
         //If clicked, create a bullet at current position
 
         if (Input.GetButton("Fire1")) {
-            Instantiate(bulletPrefab, transform.position, transform.rotation);
+            Instantiate(bulletPrefab, transform.position + bulletSpawnDistance * transform.forward, transform.rotation);
         }
 
         
